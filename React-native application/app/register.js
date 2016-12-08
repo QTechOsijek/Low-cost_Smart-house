@@ -26,16 +26,33 @@ export class Register extends Component {
         }
     }
     validateEmail(email) {
-        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
         return re.test(email);
     };
     validatePass(pass){
-        var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
-        return re.test(passs);
+        var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=.*[0-9])(?=.{8,})/;
+        return re.test(pass);
     };
     check(){
-        if(this.validateEmail(this.state.email) && this.validatePass(this.state.pass) && this.state.user.length >= 6) return true;
-        return false;
+        if(!this.validateEmail(this.state.email)){
+            this.setState({
+                message: 'Invalid email',
+            }) 
+            return false;
+        } 
+        if(!this.validatePass(this.state.pass)){
+            this.setState({
+                message: 'Password not valid',
+            })
+            return false;
+        } 
+        if(!this.state.user.length >= 6) {
+            this.setState({
+                message: 'Username has to be at least 6 characters long',
+            })
+            return false;
+        }
+        return true;
     }
     invert(){
       this.setState({
@@ -44,7 +61,8 @@ export class Register extends Component {
       
     }
     send(){
-        if(this.check){
+        console.log(this.check());
+        if(this.check()){
             const { user, pass, email } = this.state;
             fetch('https://reactnat.azurewebsites.net/register',
             {
@@ -72,11 +90,6 @@ export class Register extends Component {
             console.log(error);
             });
         }
-        else {
-            this.setState({
-                message: 'Invalid username, email or password'
-            })
-        }
       }
     render() {
         if(!this.state.registered){
@@ -87,14 +100,13 @@ export class Register extends Component {
                     />
                     <TextInput editable={true} maxLength={16} placeholder="username" style={styles.textinput} keyboardType = "default" onChangeText={(user) => this.setState({user})}/>
                     <Text>{this.state.pl}</Text>
-                    <TextInput editable={true} maxLength={16} placeholder="email" style={styles.textinput} keyboardType = "email-address" onChangeText = {(email) => {this.setState({email})}} />
+                    <TextInput editable={true} maxLength={32} placeholder="email" style={styles.textinput} keyboardType = "email-address" onChangeText = {(email) => {this.setState({email})}} />
                     <Text>{this.state.pl}</Text>
                     <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
                     <Text>{this.state.message}</Text>
                     <Button onPress={this.send.bind(this)} styleName="tight">
                         <Text style={styles.text}>Register</Text>
                     </Button>
-                    
                     <Text>{"\n"}Registered already?{"\n"}</Text>
                     <TouchableOpacity onPress={this.invert.bind(this)}>
                         <Text style={styles.highlighted}>Login</Text>
@@ -136,7 +148,7 @@ const styles = StyleSheet.create({
   },
   textinput: {
     width: 120,
-    height: 30,
+    height: Platform.OS === "ios"? 40 : 50,
   },
   highlighted: {
       color: 'blue',

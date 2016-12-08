@@ -8,7 +8,7 @@ import {
   Alert,
   TextInput,
   TouchableOpacity,
-  Platform
+  Platform, 
 } from 'react-native';
 import { Title, NavigationBar, Icon, Button, ListView, Card } from '@shoutem/ui';
 import { Login } from './login';
@@ -18,24 +18,62 @@ export class Main extends Component {
         super(props);
         this.state = {
             logged: true,
-            data: [{
-              "id": 0,
-              "name": "Light control",
-              "button": "Switch light"
-            },
-            {
-              "id": 1,
-              "name": "Light dimer",
-              "button": "Extend"
-            }],            
+            newItem: '',
+            data: this.getData(),
+            user: this.props.user            
         }
     }
-
+    getData(){
+      const { user } = this.state;
+      fetch('https://reactnat.azurewebsites.net/items',
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'user': user,
+                })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                return responseJson.data; 
+        })
+            .catch((error) => {
+            console.log(error);
+            });
+        }
     invert(){
         this.setState({
             logged: !this.state.logged
         })
     }
+    addItem(){
+      const { newItem } = this.state;
+      fetch('https://reactnat.azurewebsites.net/add',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'item': newItem,
+                })
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson);
+                if(responseJson.status){
+                    Alert(response.message + 'added');
+            } 
+        })
+            .catch((error) => {
+            console.log(error);
+            });
+        }
     doSomething(command){
         fetch('https://reactnat.azurewebsitses.net/doSomething' , {
           method: "POST",
@@ -64,8 +102,12 @@ export class Main extends Component {
               data = {this.state.data} 
               renderRow = {this.renderRow}
              />
-             <TouchableOpacity onPress={this.invert.bind(this)}>
-              <Text style={styles.highlighted}>Log out</Text>
+            <Card>
+                <TextInput editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
+                <Button onPress={this.addItem}><Text>Add New Item</Text></Button>
+            </Card>
+            <TouchableOpacity onPress={this.invert.bind(this)}>
+              <Text style={ styles.highlighted }>Log out</Text>
             </TouchableOpacity>
           </View>
           );

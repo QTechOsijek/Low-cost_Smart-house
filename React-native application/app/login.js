@@ -56,10 +56,9 @@ export class Login extends Component {
         response.json()
        )
       .then((responseJson) => {
-         console.log(responseJson);
+        console.log(responseJson);
         if(responseJson.status){
-         
-          this.setState({
+         this.setState({
             logged: true,
           })
         }
@@ -84,7 +83,7 @@ export class Login extends Component {
               <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
               <Text>{"\n"}</Text>
             </View>
-            <Button onPress={this.send.bind(this)} styleName="tight">
+            <Button onPress={this.send} styleName="tight">
               <Text style={styles.text}>Login</Text>
             </Button>
             <Text>{"\n"}</Text>
@@ -98,7 +97,7 @@ export class Login extends Component {
         return (<Register />);
       }
     } else {
-       return <Main />;
+       return <Main user={this.state.user} />;
     }
   }
 }
