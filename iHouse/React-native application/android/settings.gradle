@@ -1,0 +1,5 @@
+rootProject.name = 'iHouse'
+include ':mobile-center-analytics'
+project(':mobile-center-analytics').projectDir = new File(rootProject.projectDir, '../node_modules/mobile-center-analytics/android')
+
+include ':app'
