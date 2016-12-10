@@ -96,7 +96,7 @@ export class Login extends Component {
         return (<Register />);
       }
     } else {
-      return (<Main />);
+      return (<Main user={this.state.props} />);
     }
   }
 }
