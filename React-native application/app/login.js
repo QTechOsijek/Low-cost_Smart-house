@@ -26,7 +26,7 @@ export class Login extends Component {
             notRegistered: false,
             logged: false,
             pl: Platform.OS === "ios" ? "\n": "",
-            user: "",
+            user: '',
             pass: ''
         }
         this.send = this.send.bind(this);
@@ -39,8 +39,6 @@ export class Login extends Component {
     }
 
   send(){
-    const { user } = this.state;
-    const { pass } = this.state;
     fetch('https://reactnat.azurewebsites.net/auth', {
        method: 'POST',
        headers: {
@@ -48,8 +46,8 @@ export class Login extends Component {
           'Content-Type': 'application/json',
        },
        body: JSON.stringify({
-          'user': user,
-          'pass': pass,
+          user: this.state.user,
+          pass: this.state.pass ,
         }),
       })
       .then((response) => 
@@ -60,7 +58,6 @@ export class Login extends Component {
         if(responseJson.status){
          this.setState({
             logged: true,
-            user: user,
           })
         }
       })
@@ -99,11 +96,11 @@ export class Login extends Component {
         return (<Register />);
       }
     } else {
-      let user = this.state.user;
-      return (<Main user={user} />);
+      return (<Main />);
     }
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
