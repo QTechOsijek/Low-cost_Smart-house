@@ -20,7 +20,7 @@ export class Main extends Component {
             logged: true,
             newItem: '',
             data: this.getData(),
-            user: this.props.user            
+            user: this.props.user,           
         }
     }
     getData(){

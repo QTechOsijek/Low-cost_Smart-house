@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-'use strict';
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -14,7 +13,7 @@ import {
   Alert,
   TextInput,
   TouchableOpacity,
-  Platform
+  Platform, 
 } from 'react-native';
 import { Title, NavigationBar, Icon, Button } from '@shoutem/ui';
 import { Register } from './register';
@@ -27,7 +26,7 @@ export class Login extends Component {
             notRegistered: false,
             logged: false,
             pl: Platform.OS === "ios" ? "\n": "",
-            user: '',
+            user: "",
             pass: ''
         }
         this.send = this.send.bind(this);
@@ -40,7 +39,8 @@ export class Login extends Component {
     }
 
   send(){
-    const { user, pass } = this.state;
+    const { user } = this.state;
+    const { pass } = this.state;
     fetch('https://reactnat.azurewebsites.net/auth', {
        method: 'POST',
        headers: {
@@ -60,6 +60,7 @@ export class Login extends Component {
         if(responseJson.status){
          this.setState({
             logged: true,
+            user: user,
           })
         }
       })
@@ -70,6 +71,7 @@ export class Login extends Component {
    
   }
   render() {
+    
     if(!this.state.logged){
       if(!this.state.notRegistered){
         return (
@@ -97,7 +99,8 @@ export class Login extends Component {
         return (<Register />);
       }
     } else {
-       return <Main user={this.state.user} />;
+      let user = this.state.user;
+      return (<Main user={user} />);
     }
   }
 }

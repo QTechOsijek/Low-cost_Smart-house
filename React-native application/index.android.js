@@ -18,4 +18,4 @@ export default class LCSH extends Component {
 }
 
 
-AppRegistry.registerComponent('NewApp', () => LCSH);
+AppRegistry.registerComponent('iHouse', () => LCSH);
