@@ -14,32 +14,33 @@ import { Title, NavigationBar, Icon, Button, ListView, Card } from '@shoutem/ui'
 import { Login } from './login';
 
 export class Main extends Component {
-    constructor(props){
-        super(props);
+    constructor(){
+        super();
+        const { user } = this.props;
         this.state = {
             logged: true,
-            newItem: '',
-            data: this.getData(),
-            user: this.props.user,           
+            user: this.props.user,
+            newItem: '', 
+            data: [],          
         }
+        this.getData = this.getData.bind(this);
     }
     getData(){
-      const { user } = this.state;
-      fetch('https://reactnat.azurewebsites.net/items',
+      return fetch('https://reactnat.azurewebsites.net/items',
             {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    'user': user,
+                    'name': 'a'
                 })
             })
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
-                return responseJson.data; 
+                return responseJson.data;
         })
             .catch((error) => {
             console.log(error);
@@ -93,24 +94,25 @@ export class Main extends Component {
       );
     }
     render(){
-        if(this.state.logged) { return (
-          <View style={styles.container}>
-          <NavigationBar
-              centerComponent={ <Title>Smart House</Title> }
-            />
-            <ListView
-              data = {this.state.data} 
-              renderRow = {this.renderRow}
-             />
-            <Card>
-                <TextInput editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
-                <Button onPress={this.addItem}><Text>Add New Item</Text></Button>
-            </Card>
-            <TouchableOpacity onPress={this.invert.bind(this)}>
-              <Text style={ styles.highlighted }>Log out</Text>
-            </TouchableOpacity>
-          </View>
-          );
+        if(this.state.logged) { 
+            return (
+            <View style={styles.container}>
+            <NavigationBar
+                centerComponent={ <Title>Smart House</Title> }
+                />
+                <ListView
+                data = {this.getData} 
+                renderRow = {this.renderRow}
+                />
+                <Card>
+                    <TextInput editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
+                    <Button onPress={this.addItem}><Text>Add New Item</Text></Button>
+                </Card>
+                <TouchableOpacity onPress={this.invert.bind(this)}>
+                <Text style={ styles.highlighted }>Log out</Text>
+                </TouchableOpacity>
+            </View>
+            );
         } else {
             return <Login />
         }

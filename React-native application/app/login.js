@@ -29,7 +29,6 @@ export class Login extends Component {
             user: '',
             pass: ''
         }
-        this.send = this.send.bind(this);
     }
   invert(){
       this.setState({
@@ -39,22 +38,22 @@ export class Login extends Component {
     }
 
   send(){
-    fetch('https://reactnat.azurewebsites.net/auth', {
+    const { user , pass } = this.state;
+    /*fetch('https://reactnat.azurewebsites.net/auth', {
        method: 'POST',
        headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
        },
        body: JSON.stringify({
-          user: this.state.user,
-          pass: this.state.pass ,
+          'user': user,
+          'pass': pass,
         }),
       })
       .then((response) => 
         response.json()
        )
       .then((responseJson) => {
-        console.log(responseJson);
         if(responseJson.status){
          this.setState({
             logged: true,
@@ -63,8 +62,10 @@ export class Login extends Component {
       })
       .catch((error) => {
         console.log(error);
-      });
-      
+      });*/
+      this.setState({
+            logged: true,
+      })
    
   }
   render() {
@@ -82,7 +83,7 @@ export class Login extends Component {
               <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
               <Text>{"\n"}</Text>
             </View>
-            <Button onPress={this.send} styleName="tight">
+            <Button onPress={this.send.bind(this)} styleName="tight">
               <Text style={styles.text}>Login</Text>
             </Button>
             <Text>{"\n"}</Text>
@@ -96,7 +97,7 @@ export class Login extends Component {
         return (<Register />);
       }
     } else {
-      return (<Main user={this.state.props} />);
+      return (<Main user='a' />);
     }
   }
 }
