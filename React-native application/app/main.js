@@ -19,14 +19,13 @@ export class Main extends Component {
         const { user } = this.props;
         this.state = {
             logged: true,
-            user: this.props.user,
             newItem: '', 
             data: [],          
         }
-        this.getData = this.getData.bind(this);
+        this.getData();
     }
     getData(){
-      return fetch('https://reactnat.azurewebsites.net/items',
+        return fetch('https://reactnat.azurewebsites.net/items',
             {
                 method: 'POST',
                 headers: {
@@ -40,11 +39,15 @@ export class Main extends Component {
             .then((response) => response.json())
             .then((responseJson) => {
                 console.log(responseJson);
-                return responseJson.data;
-        })
+                this.setState({
+                    data: responseJson.data
+                })
+                
+            })
             .catch((error) => {
-            console.log(error);
+                console.log(error);
             });
+        
         }
     invert(){
         this.setState({
@@ -84,14 +87,15 @@ export class Main extends Component {
         })
     }
     renderRow(data, rowId){
-      return(
-        <Card
-          key={rowId}>
-          <Text style = { styles.container }>{data.name}</Text>
-          <Button onPress={this.doSomething}><Text style={styles.text}> {data.button} </Text></Button>
-          <Text>{"\n"}</Text>
-        </Card>
-      );
+        console.log(data);
+        return(
+            <Card
+                key={rowId}>
+            <Text style = { styles.container }>{data.name}</Text>
+            <Button onPress={this.doSomething}><Text style={styles.text}> {data.button} </Text></Button>
+            <Text>{"\n"}</Text>
+            </Card>
+        );
     }
     render(){
         if(this.state.logged) { 
@@ -101,8 +105,8 @@ export class Main extends Component {
                 centerComponent={ <Title>Smart House</Title> }
                 />
                 <ListView
-                data = {this.getData} 
-                renderRow = {this.renderRow}
+                    data = {this.state.data} 
+                    renderRow = {this.renderRow}
                 />
                 <Card>
                     <TextInput editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
