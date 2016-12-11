@@ -14,8 +14,8 @@ import { Title, NavigationBar, Icon, Button, ListView, Card } from '@shoutem/ui'
 import { Login } from './login';
 
 export class Main extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         const { user } = this.props;
         this.state = {
             logged: true,
