@@ -89,12 +89,12 @@ export class Main extends Component {
     renderRow(data, rowId){
         console.log(data);
         return(
-            <Card
+            <View
                 key={rowId}>
-            <Text style = { styles.container }>{data.name}</Text>
-            <Button onPress={this.doSomething}><Text style={styles.text}> {data.button} </Text></Button>
-            <Text>{"\n"}</Text>
-            </Card>
+                <Text style = { styles.textp }>{data.name}</Text>
+                <Button onPress={this.doSomething}><Text style={styles.text}> {data.button} </Text></Button>
+                <Text>{"\n"}</Text>
+            </View>
         );
     }
     render(){
@@ -109,11 +109,12 @@ export class Main extends Component {
                     renderRow = {this.renderRow}
                 />
                 <Card>
+                    <Text>Add New Item</Text>
                     <TextInput editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
-                    <Button onPress={this.addItem}><Text>Add New Item</Text></Button>
+                    <Button onPress={this.addItem}><Icon name="right-arrow" /></Button>
                 </Card>
                 <TouchableOpacity onPress={this.invert.bind(this)}>
-                <Text style={ styles.highlighted }>Log out</Text>
+                    <Text style={ styles.highlighted }>Log out</Text>
                 </TouchableOpacity>
             </View>
             );
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    paddingTop: 70,
   },
   instructions: {
     textAlign: 'center',
@@ -140,7 +142,7 @@ const styles = StyleSheet.create({
     color: 'azure',
     paddingLeft: Platform.OS === "ios"? 0: 10,
     paddingRight: Platform.OS === "ios"? 0: 10,
-    paddingTop:Platform.OS === "ios"? 0: 5,
+    paddingTop: 5,
     paddingBottom:Platform.OS === "ios"? 0: 5,
     borderRadius: Platform.OS === "ios"? 0: 8,
     borderWidth:Platform.OS === "ios"? 0: 0.4,
@@ -148,6 +150,13 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  textp: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#453C9F',
+    paddingTop: 10,
   },
   textinput: {
     width: 120,
