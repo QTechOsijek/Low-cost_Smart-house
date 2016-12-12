@@ -18,7 +18,7 @@ export class Main extends Component {
         super(props);
         this.state = {
             logged: true,
-            newItem: '', 
+            newitem: '', 
             data: [],
             loaded: false,
             action: ''        
@@ -31,7 +31,7 @@ export class Main extends Component {
                 loaded: false,
             })
         }
-        return fetch('https://reactnat.azurewebsites.net/items',
+        fetch('https://reactnat.azurewebsites.net/items',
             {
                 method: 'POST',
                 headers: {
@@ -48,10 +48,10 @@ export class Main extends Component {
                 this.setState({
                     loaded: true,
                     data: responseJson.data,
-                    newItem: '',
-                    action: '',
+                    newitem: '',
+                    action: ''
                 })
-                
+                console.log(this.state);
             })
             .catch((error) => {
                 console.log(error);
@@ -61,11 +61,12 @@ export class Main extends Component {
     invert(){
         this.setState({
             logged: !this.state.logged
-        })
+        });
     }
     addItem(){
-      const { newItem, action } = this.state;
-      fetch('https://reactnat.azurewebsites.net/add',
+        console.log(this.state);
+        const { newitem , action } = this.state;
+        fetch('https://reactnat.azurewebsites.net/add',
             {
                 method: 'POST',
                 headers: {
@@ -73,7 +74,7 @@ export class Main extends Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    'item': newItem,
+                    'item': newitem,
                     'action': action,
                     'name': 'a',
                 })
@@ -83,13 +84,12 @@ export class Main extends Component {
                 console.log(responseJson);
                 if(responseJson.status){
                     Alert(response.message + 'added');
-                    this.setState({
-                        data: this.getData()
-                    })
+                    this.getData();
+                    
             } 
-        })
+            })
             .catch((error) => {
-            console.log(error);
+                console.log(error);
             });
         }
     doSomething(command){
@@ -125,9 +125,9 @@ export class Main extends Component {
                 />
                 <Card>
                     <Text>Add New Item</Text>
-                    <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
+                    <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
                     <TextInput placeholder="Action" editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
-                    <Button onPress={this.addItem}><Icon name="right-arrow" /></Button>
+                    <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
                 </Card>
                 <TouchableOpacity onPress={this.invert.bind(this)}>
                     <Text style={ styles.highlighted }>Log out</Text>
