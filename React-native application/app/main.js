@@ -122,6 +122,7 @@ export class Main extends Component {
                     data = {this.state.data} 
                     loading = {!this.state.loaded}
                     renderRow = {this.renderRow}
+                    onRefresh = {this.getData.bind(this)}
                 />
                 <Card>
                     <Text>Add New Item</Text>
