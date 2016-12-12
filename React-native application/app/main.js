@@ -16,13 +16,13 @@ import { Login } from './login';
 export class Main extends Component {
     constructor(props){
         super(props);
-        const { user } = this.props;
         this.state = {
             logged: true,
             newItem: '', 
             data: [],
-            loaded: false          
-        }
+            loaded: false,
+            action: ''        
+        };
         this.getData();
     }
     getData(){
@@ -48,7 +48,8 @@ export class Main extends Component {
                 this.setState({
                     loaded: true,
                     data: responseJson.data,
-                    newItem: this.state.newItem,
+                    newItem: '',
+                    action: '',
                 })
                 
             })
@@ -63,7 +64,7 @@ export class Main extends Component {
         })
     }
     addItem(){
-      const { newItem } = this.state;
+      const { newItem, action } = this.state;
       fetch('https://reactnat.azurewebsites.net/add',
             {
                 method: 'POST',
@@ -73,6 +74,7 @@ export class Main extends Component {
                 },
                 body: JSON.stringify({
                     'item': newItem,
+                    'action': action,
                     'name': 'a',
                 })
             })
@@ -123,7 +125,8 @@ export class Main extends Component {
                 />
                 <Card>
                     <Text>Add New Item</Text>
-                    <TextInput editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
+                    <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newItem) => {this.setState({newItem})}} />
+                    <TextInput placeholder="Action" editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
                     <Button onPress={this.addItem}><Icon name="right-arrow" /></Button>
                 </Card>
                 <TouchableOpacity onPress={this.invert.bind(this)}>
