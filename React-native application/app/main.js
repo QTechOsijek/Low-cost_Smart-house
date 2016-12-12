@@ -20,11 +20,17 @@ export class Main extends Component {
         this.state = {
             logged: true,
             newItem: '', 
-            data: [],          
+            data: [],
+            loaded: false          
         }
         this.getData();
     }
     getData(){
+        if(this.state.loaded) { 
+            this.setState({
+                loaded: false,
+            })
+        }
         return fetch('https://reactnat.azurewebsites.net/items',
             {
                 method: 'POST',
@@ -40,7 +46,9 @@ export class Main extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 this.setState({
-                    data: responseJson.data
+                    loaded: true,
+                    data: responseJson.data,
+                    newItem: this.state.newItem,
                 })
                 
             })
@@ -65,6 +73,7 @@ export class Main extends Component {
                 },
                 body: JSON.stringify({
                     'item': newItem,
+                    'name': 'a',
                 })
             })
             .then((response) => response.json())
@@ -72,6 +81,9 @@ export class Main extends Component {
                 console.log(responseJson);
                 if(responseJson.status){
                     Alert(response.message + 'added');
+                    this.setState({
+                        data: this.getData()
+                    })
             } 
         })
             .catch((error) => {
@@ -106,6 +118,7 @@ export class Main extends Component {
                 />
                 <ListView
                     data = {this.state.data} 
+                    loading = {!this.state.loaded}
                     renderRow = {this.renderRow}
                 />
                 <Card>
