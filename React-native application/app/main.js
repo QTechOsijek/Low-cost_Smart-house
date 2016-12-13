@@ -45,7 +45,7 @@ export class Main extends Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    'name': user
+                    'name': user,
                 })
             })
             .then((response) => response.json())
@@ -82,7 +82,7 @@ export class Main extends Component {
                 body: JSON.stringify({
                     'item': newitem,
                     'action': action,
-                    'name': 'a',
+                    'name': this.props.user,
                 })
             })
             .then((response) => response.json())
@@ -127,7 +127,7 @@ export class Main extends Component {
     }
     render(){
         if(this.state.logged) { 
-            if(this.state.data.length){
+            if(this.state.data.length > 0 || !this.state.loaded){
                 return (
                 <View style={styles.container}>
                 <NavigationBar
