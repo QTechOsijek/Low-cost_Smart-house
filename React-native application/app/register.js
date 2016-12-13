@@ -13,6 +13,17 @@ import {
 import { Title, NavigationBar, Button, Spinner } from '@shoutem/ui';
 import { Login } from './login';
 
+export class SorT extends Component {
+    static propTypes = {
+        loaded: React.PropTypes.bool,
+        message: React.PropTypes.string
+    };
+    render(){
+        if(this.props.loaded) return <Text>{this.props.message}</Text>
+        else return <Spinner />
+    }
+}
+
 export class Register extends Component {
     constructor(props){
         super(props);
@@ -23,6 +34,7 @@ export class Register extends Component {
             email: '',
             pl: Platform.OS === "ios" ? "\n": "",
             message: "\n",
+            loaded: true
         }
     }
     validateEmail(email) {
@@ -64,7 +76,7 @@ export class Register extends Component {
         console.log(this.check());
         if(this.check()){
             this.setState({
-                message: <Spinner />
+                loaded: false
             })
             const { user, pass, email } = this.state;
             fetch('https://reactnat.azurewebsites.net/register',
@@ -106,7 +118,7 @@ export class Register extends Component {
                     <TextInput editable={true} maxLength={32} placeholder="email" style={styles.textinput} keyboardType = "email-address" onChangeText = {(email) => {this.setState({email})}} />
                     <Text>{this.state.pl}</Text>
                     <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
-                    <Text>{this.state.message}</Text>
+                    <SorT loaded={this.state.loaded} message={this.state.message} />
                     <Button onPress={this.send.bind(this)} styleName="tight">
                         <Text style={styles.text}>Register</Text>
                     </Button>
