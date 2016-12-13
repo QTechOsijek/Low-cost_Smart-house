@@ -26,7 +26,7 @@ export class Main extends Component {
             loaded: false,
             action: '', 
             item: '',
-            button: ''       
+            button: '',       
         };
         this.getData();
     }
@@ -127,7 +127,7 @@ export class Main extends Component {
     }
     render(){
         if(this.state.logged) { 
-            if(!this.state.isExpanded){
+            if(this.state.data.length){
                 return (
                 <View style={styles.container}>
                 <NavigationBar
@@ -152,13 +152,21 @@ export class Main extends Component {
                 );
             } else {
                 return (
-                    <Screen>
-                        <Card>
-                            <Text style = { styles.textp }>{this.state.item}</Text>
-                            <Button onPress={() => this.doSomething(this.state.button)}><Text style={styles.text}>{this.state.button}</Text></Button>
-                            <Text>{"\n"}</Text>
-                        </Card>
-                    </Screen>
+                    <View style={styles.container}>
+                <NavigationBar
+                    centerComponent={ <Title>Smart House</Title> }
+                    />
+                    <Text>Your list is empty, add some items</Text>
+                    <Card>
+                        <Text>Add New Item</Text>
+                        <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
+                        <TextInput placeholder="Action" editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
+                        <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
+                    </Card>
+                    <TouchableOpacity onPress={this.invert.bind(this)}>
+                        <Text style={ styles.highlighted }>Log out</Text>
+                    </TouchableOpacity>
+                </View>
                 )
             }
         } else {

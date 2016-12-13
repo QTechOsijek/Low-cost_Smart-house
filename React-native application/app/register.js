@@ -16,10 +16,9 @@ import { Login } from './login';
 export class SorT extends Component {
     static propTypes = {
         loaded: React.PropTypes.bool,
-        message: React.PropTypes.string
     };
     render(){
-        if(this.props.loaded) return <Text>{this.props.message}</Text>
+        if(this.props.loaded) return <Text style={styles.text}>Register</Text>
         else return <Spinner />
     }
 }
@@ -33,8 +32,8 @@ export class Register extends Component {
             pass: '',
             email: '',
             pl: Platform.OS === "ios" ? "\n": "",
-            message: "\n",
-            loaded: true
+            message: "",
+            loaded: true,
         }
     }
     validateEmail(email) {
@@ -73,7 +72,6 @@ export class Register extends Component {
       
     }
     send(){
-        console.log(this.check());
         if(this.check()){
             this.setState({
                 loaded: false
@@ -99,7 +97,12 @@ export class Register extends Component {
                     this.setState({
                         registered: true
                     })
-            } 
+                } else {
+                    this.setState({
+                        loaded: true,
+                        message: responseJson.message,
+                    })
+                } 
         })
             .catch((error) => {
             console.log(error);
@@ -118,9 +121,9 @@ export class Register extends Component {
                     <TextInput editable={true} maxLength={32} placeholder="email" style={styles.textinput} keyboardType = "email-address" onChangeText = {(email) => {this.setState({email})}} />
                     <Text>{this.state.pl}</Text>
                     <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
-                    <SorT loaded={this.state.loaded} message={this.state.message} />
+                    <Text>{this.state.message}</Text>
                     <Button onPress={this.send.bind(this)} styleName="tight">
-                        <Text style={styles.text}>Register</Text>
+                        <SorT loaded={this.state.loaded} />
                     </Button>
                     <Text>{"\n"}Registered already?{"\n"}</Text>
                     <TouchableOpacity onPress={this.invert.bind(this)}>

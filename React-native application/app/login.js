@@ -15,9 +15,19 @@ import {
   TouchableOpacity,
   Platform, 
 } from 'react-native';
-import { Title, NavigationBar, Icon, Button } from '@shoutem/ui';
+import { Title, NavigationBar, Icon, Button, Spinner } from '@shoutem/ui';
 import { Register } from './register';
 import { Main } from './main';
+
+export class SorT extends Component {
+    static propTypes = {
+        loaded: React.PropTypes.bool,
+    };
+    render(){
+        if(this.props.loaded) return <Text style={styles.text}>Login</Text>
+        else return <Spinner />
+    }
+}
 
 export class Login extends Component {
   constructor(props){
@@ -27,7 +37,8 @@ export class Login extends Component {
             logged: false,
             pl: Platform.OS === "ios" ? "\n": "",
             user: '',
-            pass: ''
+            pass: '',
+            loaded: true,
         }
     }
   invert(){
@@ -38,6 +49,9 @@ export class Login extends Component {
     }
 
   send(){
+    this.setState({
+      loaded: false
+    })
     const { user , pass } = this.state;
     fetch('https://reactnat.azurewebsites.net/auth', {
        method: 'POST',
@@ -54,11 +68,15 @@ export class Login extends Component {
         response.json()
        )
       .then((responseJson) => {
+        console.log(responseJson);
         if(responseJson.status){
          this.setState({
             logged: true,
           })
         }
+        this.setState({
+          loaded: true,
+        })
       })
       .catch((error) => {
         console.log(error);
@@ -80,7 +98,7 @@ export class Login extends Component {
               <Text>{"\n"}</Text>
             </View>
             <Button onPress={this.send.bind(this)} styleName="tight">
-              <Text style={styles.text}>Login</Text>
+              <SorT loaded={this.state.loaded} />
             </Button>
             <Text>{"\n"}</Text>
             <Text>Not registered yet?{"\n"}</Text>
@@ -93,42 +111,42 @@ export class Login extends Component {
         return (<Register />);
       }
     } else {
-      return (<Main user='a' />);
+      return (<Main user={this.state.user} />);
     }
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  text: {
-    color: 'azure',
-    paddingLeft: Platform.OS === "ios"? 0: 10,
-    paddingRight: Platform.OS === "ios"? 0: 10,
-    paddingTop: Platform.OS === "ios"? 0: 5,
-    paddingBottom: Platform.OS === "ios"? 0: 5,
-    borderRadius: Platform.OS === "ios"? 0: 8,
-    borderWidth: Platform.OS === "ios"? 0: 0.4,
-    backgroundColor: 'gray',
-    borderColor: 'gray',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textInputContainer:{
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  textinput: {
-    width: 120,
-    height: 40,
-  },
-  highlighted: {
-      color: 'blue',
-  }
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#F5FCFF',
+    },
+    text: {
+      color: 'azure',
+      paddingLeft: Platform.OS === "ios"? 0: 10,
+      paddingRight: Platform.OS === "ios"? 0: 10,
+      paddingTop: Platform.OS === "ios"? 0: 5,
+      paddingBottom: Platform.OS === "ios"? 0: 5,
+      borderRadius: Platform.OS === "ios"? 0: 8,
+      borderWidth: Platform.OS === "ios"? 0: 0.4,
+      backgroundColor: 'gray',
+      borderColor: 'gray',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    textInputContainer:{
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    textinput: {
+      width: 120,
+      height: 40,
+    },
+    highlighted: {
+        color: 'blue',
+    }
 });
 
 AppRegistry.registerComponent('Login', () => Login);
