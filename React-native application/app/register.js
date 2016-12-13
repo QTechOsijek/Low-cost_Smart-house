@@ -121,7 +121,6 @@ export class Register extends Component {
                     <SorT loaded={this.state.loaded} message={this.state.message} />
                     <Button onPress={this.send.bind(this)} styleName="tight">
                         <Text style={styles.text}>Register</Text>
-                        <Spinner />
                     </Button>
                     <Text>{"\n"}Registered already?{"\n"}</Text>
                     <TouchableOpacity onPress={this.invert.bind(this)}>
