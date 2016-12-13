@@ -63,11 +63,7 @@ export class Login extends Component {
       .catch((error) => {
         console.log(error);
       });
-      this.setState({
-            logged: true,
-      })
-   
-  }
+    }
   render() {
     
     if(!this.state.logged){

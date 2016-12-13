@@ -8,9 +8,9 @@ import {
   Alert,
   TextInput,
   TouchableOpacity,
-  Platform
+  Platform, 
 } from 'react-native';
-import { Title, NavigationBar, Button } from '@shoutem/ui';
+import { Title, NavigationBar, Button, Spinner } from '@shoutem/ui';
 import { Login } from './login';
 
 export class Register extends Component {
@@ -63,6 +63,9 @@ export class Register extends Component {
     send(){
         console.log(this.check());
         if(this.check()){
+            this.setState({
+                message: <Spinner />
+            })
             const { user, pass, email } = this.state;
             fetch('https://reactnat.azurewebsites.net/register',
             {
