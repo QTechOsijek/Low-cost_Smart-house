@@ -39,7 +39,7 @@ export class Login extends Component {
 
   send(){
     const { user , pass } = this.state;
-    /*fetch('https://reactnat.azurewebsites.net/auth', {
+    fetch('https://reactnat.azurewebsites.net/auth', {
        method: 'POST',
        headers: {
           'Accept': 'application/json',
@@ -62,7 +62,7 @@ export class Login extends Component {
       })
       .catch((error) => {
         console.log(error);
-      });*/
+      });
       this.setState({
             logged: true,
       })

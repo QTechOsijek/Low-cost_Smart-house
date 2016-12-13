@@ -10,10 +10,13 @@ import {
   TouchableOpacity,
   Platform, 
 } from 'react-native';
-import { Title, NavigationBar, Icon, Button, ListView, Card } from '@shoutem/ui';
+import { Title, NavigationBar, Icon, Button, ListView, Card, Screen } from '@shoutem/ui';
 import { Login } from './login';
 
 export class Main extends Component {
+    static propTypes = {
+        user: React.PropTypes.string
+    };
     constructor(props){
         super(props);
         this.state = {
@@ -21,11 +24,14 @@ export class Main extends Component {
             newitem: '', 
             data: [],
             loaded: false,
-            action: ''        
+            action: '', 
+            item: '',
+            button: ''       
         };
         this.getData();
     }
     getData(){
+        const { user } = this.props;
         if(this.state.loaded) { 
             this.setState({
                 loaded: false,
@@ -39,7 +45,7 @@ export class Main extends Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    'name': 'a'
+                    'name': user
                 })
             })
             .then((response) => response.json())
@@ -83,7 +89,7 @@ export class Main extends Component {
             .then((responseJson) => {
                 console.log(responseJson);
                 if(responseJson.status){
-                    Alert(response.message + 'added');
+                    Alert.alert(responseJson.message + ' added');
                     this.getData();
                     
             } 
@@ -100,41 +106,61 @@ export class Main extends Component {
           })
         })
     }
+    onButtonPress(item){
+        console.log(item);
+        this.setState({
+            isExpanded: true,
+            item: item.name,
+            button: item.button,
+        });
+    }
     renderRow(data, rowId){
         console.log(data);
         return(
             <View
                 key={rowId}>
                 <Text style = { styles.textp }>{data.name}</Text>
-                <Button onPress={this.doSomething}><Text style={styles.text}> {data.button} </Text></Button>
+                <Button onPress={data => this.onButtonPress(data)}><Text style={styles.text}> + </Text></Button>
                 <Text>{"\n"}</Text>
             </View>
         );
     }
     render(){
         if(this.state.logged) { 
-            return (
-            <View style={styles.container}>
-            <NavigationBar
-                centerComponent={ <Title>Smart House</Title> }
-                />
-                <ListView
-                    data = {this.state.data} 
-                    loading = {!this.state.loaded}
-                    renderRow = {this.renderRow}
-                    onRefresh = {this.getData.bind(this)}
-                />
-                <Card>
-                    <Text>Add New Item</Text>
-                    <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
-                    <TextInput placeholder="Action" editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
-                    <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
-                </Card>
-                <TouchableOpacity onPress={this.invert.bind(this)}>
-                    <Text style={ styles.highlighted }>Log out</Text>
-                </TouchableOpacity>
-            </View>
-            );
+            if(!this.state.isExpanded){
+                return (
+                <View style={styles.container}>
+                <NavigationBar
+                    centerComponent={ <Title>Smart House</Title> }
+                    />
+                    <ListView
+                        data = {this.state.data} 
+                        loading = {!this.state.loaded}
+                        renderRow = {this.renderRow}
+                        onRefresh = {this.getData.bind(this)}
+                    />
+                    <Card>
+                        <Text>Add New Item</Text>
+                        <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
+                        <TextInput placeholder="Action" editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
+                        <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
+                    </Card>
+                    <TouchableOpacity onPress={this.invert.bind(this)}>
+                        <Text style={ styles.highlighted }>Log out</Text>
+                    </TouchableOpacity>
+                </View>
+                );
+            } else {
+                return (
+                    <Screen>
+                        <Card>
+                            <Text style = { styles.textp }>{this.state.item}</Text>
+                            <Button onPress={() => this.doSomething(this.state.button)}><Text style={styles.text}>{this.state.button}</Text></Button>
+                            <Text>{"\n"}</Text>
+                        </Card>
+                    </Screen>
+                )
+            }
         } else {
             return <Login />
         }
@@ -142,6 +168,8 @@ export class Main extends Component {
 
 
 }
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
