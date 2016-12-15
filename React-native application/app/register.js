@@ -116,12 +116,14 @@ export class Register extends Component {
                     <NavigationBar
                         centerComponent={ <Title>Smart House</Title> }
                     />
-                    <TextInput editable={true} maxLength={16} placeholder="username" style={styles.textinput} keyboardType = "default" onChangeText={(user) => this.setState({user})}/>
-                    <Text>{this.state.pl}</Text>
-                    <TextInput editable={true} maxLength={32} placeholder="email" style={styles.textinput} keyboardType = "email-address" onChangeText = {(email) => {this.setState({email})}} />
-                    <Text>{this.state.pl}</Text>
-                    <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
-                    <Text>{this.state.message}</Text>
+                    <View style={styles.textInputContainer}>
+                        <TextInput editable={true} maxLength={16} placeholder="username" style={styles.textinput} keyboardType = "default" onChangeText={(user) => this.setState({user})} autoCapitalize="none" />
+                        <Text>{this.state.pl}</Text>
+                        <TextInput editable={true} maxLength={32} placeholder="email" style={styles.textinput} keyboardType = "email-address" onChangeText = {(email) => {this.setState({email})}} autoCapitalize="none"/>
+                        <Text>{this.state.pl}</Text>
+                        <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} autoCapitalize="none"/>
+                        <Text>{this.state.message}</Text>
+                    </View>
                     <Button onPress={this.send.bind(this)} styleName="tight">
                         <SorT loaded={this.state.loaded} />
                     </Button>
@@ -155,15 +157,19 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'azure',
-    paddingLeft: Platform.OS === "ios"? 0: 10,
-    paddingRight: Platform.OS === "ios"? 0: 10,
-    paddingTop: Platform.OS === "ios"? 0: 5,
-    paddingBottom: Platform.OS === "ios"? 0: 5,
-    borderRadius: Platform.OS === "ios"? 0: 8,
-    borderWidth: Platform.OS === "ios"? 0: 0.4,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    borderRadius: 8,
+    borderWidth: 0.4,
     backgroundColor: 'gray',
     borderColor: 'gray'
   },
+  textInputContainer:{
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   textinput: {
     width: 120,
     height: Platform.OS === "ios"? 40 : 50,

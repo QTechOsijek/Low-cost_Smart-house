@@ -92,9 +92,9 @@ export class Login extends Component {
               centerComponent={ <Title>Smart House</Title> }
             />
             <View style={styles.textInputContainer}>
-              <TextInput editable={true} maxLength={16} placeholder="username" style={styles.textinput} onChangeText = {(user) => this.setState({user})} />
+              <TextInput editable={true} maxLength={16} autoCapitalize="none" placeholder="username" style={styles.textinput} onChangeText = {(user) => this.setState({user})} />
               <Text>{this.state.pl}</Text>
-              <TextInput editable={true} maxLength={16} placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
+              <TextInput editable={true} maxLength={16} autoCapitalize="none" placeholder="password" style={styles.textinput} secureTextEntry={true} onChangeText = {(pass) => {this.setState({pass})}} />
               <Text>{"\n"}</Text>
             </View>
             <Button onPress={this.send.bind(this)} styleName="tight">
@@ -125,12 +125,12 @@ const styles = StyleSheet.create({
     },
     text: {
       color: 'azure',
-      paddingLeft: Platform.OS === "ios"? 0: 10,
-      paddingRight: Platform.OS === "ios"? 0: 10,
-      paddingTop: Platform.OS === "ios"? 0: 5,
-      paddingBottom: Platform.OS === "ios"? 0: 5,
-      borderRadius: Platform.OS === "ios"? 0: 8,
-      borderWidth: Platform.OS === "ios"? 0: 0.4,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingTop: 5,
+      paddingBottom: 5,
+      borderRadius: 8,
+      borderWidth: 0.4,
       backgroundColor: 'gray',
       borderColor: 'gray',
       justifyContent: 'center',
