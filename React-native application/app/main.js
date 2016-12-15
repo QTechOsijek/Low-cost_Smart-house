@@ -141,8 +141,8 @@ export class Main extends Component {
                     />
                     <Card>
                         <Text>Add New Item</Text>
-                        <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
-                        <TextInput placeholder="Action" editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
+                        <TextInput placeholder="Item" value={this.state.newitem} editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
+                        <TextInput placeholder="Action" value={this.state.action} editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
                         <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
                     </Card>
                     <TouchableOpacity onPress={this.invert.bind(this)}>
@@ -159,8 +159,8 @@ export class Main extends Component {
                     <Text>Your list is empty, add some items</Text>
                     <Card>
                         <Text>Add New Item</Text>
-                        <TextInput placeholder="Item" editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
-                        <TextInput placeholder="Action" editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
+                        <TextInput placeholder="Item" value={this.state.newitem} editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
+                        <TextInput placeholder="Action" value={this.state.action} editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
                         <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
                     </Card>
                     <TouchableOpacity onPress={this.invert.bind(this)}>
