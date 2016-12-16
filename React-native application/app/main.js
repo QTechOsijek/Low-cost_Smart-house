@@ -118,7 +118,7 @@ export class Main extends Component {
         console.log(data);
         return(
             <View
-                key={rowId}>
+                key={rowId} style={styles.card} >
                 <Text style = { styles.textp }>{data.name}</Text>
                 <Button onPress={data => this.onButtonPress(data)}><Text style={styles.text}> + </Text></Button>
                 <Text>{"\n"}</Text>
@@ -193,22 +193,23 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'azure',
-    paddingLeft: Platform.OS === "ios"? 0: 10,
-    paddingRight: Platform.OS === "ios"? 0: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
     paddingTop: 5,
-    paddingBottom:Platform.OS === "ios"? 0: 5,
-    borderRadius: Platform.OS === "ios"? 0: 8,
-    borderWidth:Platform.OS === "ios"? 0: 0.4,
+    paddingBottom: 5,
+    borderRadius: 8,
+    borderWidth: 0.4,
     backgroundColor: 'gray',
     borderColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',
   },
   textp: {
-    flex: 1,
+    flex: 0.9,
+    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#453C9F',
+    backgroundColor: '#453CCF',
     paddingTop: 10,
   },
   textinput: {
@@ -217,6 +218,11 @@ const styles = StyleSheet.create({
   highlighted: {
       color: 'blue',
   },
+  card: {
+      borderRadius: 5,
+      flex: 1.01,
+      width: 100,
+  }
 });
 
 AppRegistry.registerComponent('Main', () => Main); 

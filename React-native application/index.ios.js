@@ -9,6 +9,7 @@ import { AppRegistry } from 'react-native';
 import { Login } from './app/login';
 import { Register } from './app/register';
 import { state } from './app/main';
+import * as firebase from 'firebase';
 
 export default class iHouse extends Component {
   render() {
