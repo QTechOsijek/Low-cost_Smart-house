@@ -19,7 +19,7 @@ export class SorT extends Component {
     };
     render(){
         if(this.props.loaded) return <Text style={styles.text}>Register</Text>
-        else return <Spinner />
+        else return <Spinner style={{backgroundColor: "#F5FCFF"}} />
     }
 }
 

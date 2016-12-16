@@ -25,7 +25,7 @@ export class SorT extends Component {
     };
     render(){
         if(this.props.loaded) return <Text style={styles.text}>Login</Text>
-        else return <Spinner />
+        else return <Spinner style={{backgroundColor: "#F5FCFF", size: 'small'}} />
     }
 }
 
