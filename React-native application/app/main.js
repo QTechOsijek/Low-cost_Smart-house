@@ -26,7 +26,8 @@ export class Main extends Component {
             loaded: false,
             action: '', 
             item: '',
-            button: '',       
+            button: '',
+            adding: false,       
         };
         this.getData();
     }
@@ -69,6 +70,98 @@ export class Main extends Component {
             logged: !this.state.logged
         });
     }
+    doSomething(command){
+        fetch('https://reactnat.azurewebsitses.net/doSomething' , {
+          method: "POST",
+          body: JSON.stringify({
+            "command": command,
+          })
+        })
+    }
+    onButtonPress(item){
+        console.log(item);
+        this.setState({
+            isExpanded: true,
+            item: item.name,
+            button: item.button,
+        });
+    }
+    add(){
+        this.setState({
+            adding: true,
+        })
+    }
+    renderRow(data, rowId){
+        console.log(data);
+        return(
+            <View
+                key={rowId} style={styles.card} >
+                <Text style = { styles.textp }>{data.name}</Text>
+                <Button onPress={data => this.onButtonPress(data)}><Text style={styles.text}> {data.button}</Text></Button>
+                <Text>{"\n"}</Text>
+            </View>
+        );
+    }
+    render(){
+        if(this.state.logged) {
+            if(!this.state.adding){ 
+                if(this.state.data.length > 0 || !this.state.loaded){
+                    return (
+                        <View style={styles.container}>
+                        <NavigationBar
+                            centerComponent={ <Title>Smart House</Title> }
+                            />
+                            <ListView
+                                data = {this.state.data} 
+                                loading = {!this.state.loaded}
+                                renderRow = {this.renderRow}
+                                onRefresh = {this.getData.bind(this)}
+                            />
+                            <Button onPress={this.add.bind(this)}><Text style={styles.text}>Add New Item</Text></Button>
+                            <TouchableOpacity onPress={this.invert.bind(this)}>
+                                <Text style={ styles.highlighted }>Log out</Text>
+                            </TouchableOpacity>
+                        </View>
+                    );
+                } else {
+                    return (
+                        <View style={styles.container}>
+                            <NavigationBar
+                                centerComponent={ <Title>Smart House</Title> }
+                            />
+                            <Text>Your list is empty, add some items</Text>
+                            <Button onPress={this.add.bind(this)}><Text style={styles.text}>Add New Item </Text></Button>
+                            <TouchableOpacity onPress={this.invert.bind(this)}>
+                                <Text style={ styles.highlighted }>Log out</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                }
+            } else {
+                return (<Add user={this.props.user} />);
+            }
+
+        } else {
+            return <Login />
+        }
+    }
+
+
+}
+
+export class Add extends Component {
+    static propTypes = {
+        user: React.PropTypes.string
+    };
+    constructor(props){
+        super(props);
+        this.state = {
+            added: false,
+            item: '',
+            action: '',
+            id: '',      
+        };
+    }
     addItem(){
         console.log(this.state);
         const { newitem , action } = this.state;
@@ -90,91 +183,29 @@ export class Main extends Component {
                 console.log(responseJson);
                 if(responseJson.status){
                     Alert.alert(responseJson.message + ' added');
-                    this.getData();
-                    
-            } 
+                    this.setState({
+                        added: true,
+                    })
+                } 
             })
             .catch((error) => {
                 console.log(error);
             });
         }
-    doSomething(command){
-        fetch('https://reactnat.azurewebsitses.net/doSomething' , {
-          method: "POST",
-          body: JSON.stringify({
-            "command": command,
-          })
-        })
-    }
-    onButtonPress(item){
-        console.log(item);
-        this.setState({
-            isExpanded: true,
-            item: item.name,
-            button: item.button,
-        });
-    }
-    renderRow(data, rowId){
-        console.log(data);
-        return(
-            <View
-                key={rowId} style={styles.card} >
-                <Text style = { styles.textp }>{data.name}</Text>
-                <Button onPress={data => this.onButtonPress(data)}><Text style={styles.text}> + </Text></Button>
-                <Text>{"\n"}</Text>
-            </View>
-        );
-    }
-    render(){
-        if(this.state.logged) { 
-            if(this.state.data.length > 0 || !this.state.loaded){
-                return (
-                <View style={styles.container}>
-                <NavigationBar
-                    centerComponent={ <Title>Smart House</Title> }
-                    />
-                    <ListView
-                        data = {this.state.data} 
-                        loading = {!this.state.loaded}
-                        renderRow = {this.renderRow}
-                        onRefresh = {this.getData.bind(this)}
-                    />
-                    <Card>
-                        <Text>Add New Item</Text>
-                        <TextInput placeholder="Item" value={this.state.newitem} editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
-                        <TextInput placeholder="Action" value={this.state.action} editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
-                        <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
-                    </Card>
-                    <TouchableOpacity onPress={this.invert.bind(this)}>
-                        <Text style={ styles.highlighted }>Log out</Text>
-                    </TouchableOpacity>
-                </View>
-                );
-            } else {
-                return (
+        render(){
+            if(!this.state.added){
+                return(
                     <View style={styles.container}>
-                <NavigationBar
-                    centerComponent={ <Title>Smart House</Title> }
-                    />
-                    <Text>Your list is empty, add some items</Text>
-                    <Card>
                         <Text>Add New Item</Text>
                         <TextInput placeholder="Item" value={this.state.newitem} editable={true} maxLength={16} style={styles.textinput} onChangeText={(newitem) => {this.setState({newitem})}} />
                         <TextInput placeholder="Action" value={this.state.action} editable={true} maxLength={16} style={styles.textinput} onChangeText={(action) => {this.setState({action})}} />
                         <Button onPress={this.addItem.bind(this)}><Icon name="right-arrow" /></Button>
-                    </Card>
-                    <TouchableOpacity onPress={this.invert.bind(this)}>
-                        <Text style={ styles.highlighted }>Log out</Text>
-                    </TouchableOpacity>
-                </View>
+                    </View>
                 )
+            } else {
+                return <Main user={this.props.user} />
             }
-        } else {
-            return <Login />
         }
-    }
-
-
 }
 
 
@@ -209,7 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#453CCF',
+    backgroundColor: '#453CAF',
     paddingTop: 10,
   },
   textinput: {
@@ -219,9 +250,10 @@ const styles = StyleSheet.create({
       color: 'blue',
   },
   card: {
-      borderRadius: 5,
+      borderRadius: 15,
+      backgroundColor: '#F5FCFF', 
       flex: 1.01,
-      width: 100,
+      width: 130,
   }
 });
 
