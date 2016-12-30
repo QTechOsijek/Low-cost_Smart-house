@@ -71,20 +71,20 @@ export class Main extends Component {
         });
     }
     doSomething(command){
-        fetch('https://reactnat.azurewebsitses.net/doSomething' , {
-          method: "POST",
-          body: JSON.stringify({
-            "command": command,
-          })
+        fetch('https://192.168.7.2/act' , {
+            method: "POST",
+            body: JSON.stringify({
+                "action": command,
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                Alert.alert("Done");
+            })
         })
     }
     onButtonPress(item){
         console.log(item);
-        this.setState({
-            isExpanded: true,
-            item: item.name,
-            button: item.button,
-        });
+        return doSomething(item.button);
     }
     add(){
         this.setState({
@@ -97,7 +97,7 @@ export class Main extends Component {
             <View
                 key={rowId} style={styles.card} >
                 <Text style = { styles.textp }>{data.name}</Text>
-                <Button onPress={data => this.onButtonPress(data)}><Text style={styles.text}> {data.button}</Text></Button>
+                <Button onPress={data => this.onButtonPress(data)}><Text style={styles.text}>{data.button}</Text></Button>
                 <Text>{"\n"}</Text>
             </View>
         );
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#FFFFFF',
     paddingTop: 70,
   },
   instructions: {
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#453CAF',
+    backgroundColor: '#A58CFF',
     paddingTop: 10,
   },
   textinput: {
