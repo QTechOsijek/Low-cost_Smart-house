@@ -70,21 +70,23 @@ export class Main extends Component {
             logged: !this.state.logged
         });
     }
-    doSomething(command){
-        fetch('https://192.168.7.2/act' , {
+    
+    doSomething(){
+        console.log("radim")
+        return fetch('http://192.168.7.2/act' , {
             method: "POST",
             body: JSON.stringify({
-                "action": command,
+                "action": "",
             })
             .then((response) => response.json())
             .then((responseJson) => {
                 Alert.alert("Done");
+                return true;
             })
+            .catch((error) => 
+                console.log(error)            
+            )
         })
-    }
-    onButtonPress(item){
-        console.log(item);
-        return doSomething(item.button);
     }
     add(){
         this.setState({
@@ -97,7 +99,7 @@ export class Main extends Component {
             <View
                 key={rowId} style={styles.card} >
                 <Text style = { styles.textp }>{data.name}</Text>
-                <Button onPress={data => this.onButtonPress(data)}><Text style={styles.text}>{data.button}</Text></Button>
+                <Button onPress={this.doSomething}><Text style={styles.text}>{data.button}</Text></Button>
                 <Text>{"\n"}</Text>
             </View>
         );
