@@ -28,6 +28,7 @@ Raspberry Pi, in our case Model 3, is connected to Azure IoT Hub, and it's commu
 
 #### Central Unit
 Central unit will be the "heart" of the house. It will consist of Raspberry Pi 3 and temperature sensor. It's actually a link between application and Arduinos or pet feeder which will perform certain tasks. It's connected to house's router and Azure IoT Hub.
+Due to Raspberry Pi's shipment delay we're using Beaglebone Black instead.
 
 #### Pet feeder
 Pet feeder's brain is Raspberry Pi Zero. Proximity sensor will send message to Raspberry and it will open feeder's door for animals to gain access to the food. Door will be opened by servo and the feeding mechanism will be controlled by stepper motor better control. Mass of food is going to be measured by BMP180 pressure sensor. BMP's callibration will be required.
