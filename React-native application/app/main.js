@@ -27,8 +27,11 @@ export class Main extends Component {
             action: '', 
             item: '',
             button: '',
-            adding: false,       
+            adding: false,
+            led: false,       
         };
+        this.renderRow = this.renderRow.bind(this);
+        this.doSomething = this.doSomething.bind(this);
         this.getData();
     }
     getData(){
@@ -72,21 +75,26 @@ export class Main extends Component {
     }
     
     doSomething(){
-        console.log("radim")
-        return fetch('http://192.168.7.2/act' , {
+        console.log("radim");
+        this.setState({
+            led: !this.state.led
+        })
+        fetch('http://192.168.1.6:8888/act' , {
             method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
-                "action": "",
-            })
+                "state": this.state.led,
+            })})
             .then((response) => response.json())
             .then((responseJson) => {
                 Alert.alert("Done");
-                return true;
             })
-            .catch((error) => 
-                console.log(error)            
-            )
-        })
+            .catch((error) => {
+                console.log(error);            
+            })
     }
     add(){
         this.setState({
