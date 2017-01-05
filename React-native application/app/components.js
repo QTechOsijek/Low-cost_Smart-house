@@ -208,3 +208,72 @@ export class VC extends Component{
         );
     }
 }
+
+export class SC extends Component{
+    static props = {
+        id: React.propTypes.number,
+        maxHeight: React.propTypes.number,
+        minHeight: React.propTypes.number,
+    }
+    constructor(props){
+        super(props);
+        this.getHeight()
+        this.state = {
+            height: 0,
+            id: this.props.id,
+        }
+    }
+    getHeight(){
+        const { id } = this.state;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'id': id,
+            }),
+        })
+        .then((response) => 
+            response.json()
+        )
+        .then((responseJson) => {
+            console.log(responseJson);
+                this.setState({
+                    height: responseJson.height,
+                })
+        })
+        .catch((error) => {
+            console.log(error);
+        });  
+    }
+    goToHeight(){
+        let { height } = this.state;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'newHeight': h,
+            }),
+        })
+        .then((response) => 
+            response.json()
+        )
+        .then((responseJson) => {
+            console.log(responseJson);
+            if(responseJson.status){
+                Alert.alert("Successfully done");
+            }
+            else {
+                Alert.alert("Not done");
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+}
