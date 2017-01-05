@@ -102,6 +102,7 @@ export class LD extends Component {
                     >
                     <Text>-</Text>
                 </Button>
+                <Text>{this.state.tempS}</Text>
             </View>
         )
     }
@@ -275,5 +276,61 @@ export class SC extends Component{
         .catch((error) => {
             console.log(error);
         });
+    }
+    addition(){
+        let { height } = this.state;
+        if(height + 5 > 255){
+            this.setState({
+                height: 255,
+            })
+        }
+        else {
+            this.setState({
+                height: this.state.height + 5
+            })
+        }
+    }
+    subtraction(){
+        let { height } = this.state;
+        if(height - 5 < 0){
+            this.setState({
+                height: 0,
+            })
+        }
+        else {
+            this.setState({
+                height: this.state.height - 5
+            })
+        }
+    }
+    countdownA(){
+        setInterval(() => this.addition(), 100);
+    }
+    countdownS(){
+        setInterval(() => this.subtraction(), 100);
+    }
+    render(){
+        return(
+            <View>
+                <Heading>Sunblind control no. {this.props.id}</Heading>
+                <Button    
+                    onPressIn={this.addition}
+                    onPressOut={this.goToHeight} 
+                    onLongPress={this.countdownA}
+                    delayLongPress={500} 
+                    >
+                    <Text>+</Text>
+                </Button>
+                <Button    
+                    onPressIn={this.subtraction}
+                    onPressOut={this.goToHeight} 
+                    onLongPress={this.countdownS}
+                    delayLongPress={500}  
+                    >
+                    <Text>-</Text>
+                </Button>
+                <Text>{this.state.height}</Text>
+            </View>
+        )
     }
 }
