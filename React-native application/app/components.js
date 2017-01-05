@@ -106,3 +106,51 @@ export class LD extends Component {
         )
     }
 } 
+
+export class LC extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            ledState: false,
+            message: "OFF"
+        }
+    }
+    changeState(){
+        let { ledState } = this.state;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'ledState': !ledState,
+            }),
+        })
+        .then((response) => 
+            response.json()
+        )
+        .then((responseJson) => {
+            console.log(responseJson);
+            if(responseJson.status){
+                this.setState({
+                    ledState: !this.state.ledState,
+                    message: this.state.ledState ? "ON": "OFF",
+                })
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+    render(){
+        return(
+            <View>
+                <Heading>Led control no. {this.props.id}</Heading>
+                <Button onPress={this.changeState}>
+                    <Text>{this.state.message}</Text>
+                </Button>
+            </View>
+        )
+    }
+}
