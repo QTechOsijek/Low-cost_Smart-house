@@ -108,6 +108,9 @@ export class LD extends Component {
 } 
 
 export class LC extends Component{
+    static props = {
+        id: React.propTypes.number
+    }
     constructor(props){
         super(props);
         this.state = {
@@ -151,6 +154,57 @@ export class LC extends Component{
                     <Text>{this.state.message}</Text>
                 </Button>
             </View>
+        );
+    }
+}
+
+export class VC extends Component{
+    static props = {
+        id: React.propTypes.number
+    }
+    constructor(props){
+        super(props);
+        this.state = {
+            ventState: false,
+            message: "OFF"
+        }
+    }
+    changeState(){
+        let { ventState } = this.state;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'ventState': !ventState,
+            }),
+        })
+        .then((response) => 
+            response.json()
         )
+        .then((responseJson) => {
+            console.log(responseJson);
+            if(responseJson.status){
+                this.setState({
+                    ventState: !this.state.ventState,
+                    message: this.state.ventState ? "ON": "OFF",
+                })
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
+    render(){
+        return(
+            <View>
+                <Heading>Vent control no. {this.props.id}</Heading>
+                <Button onPress={this.changeState}>
+                    <Text>{this.state.message}</Text>
+                </Button>
+            </View>
+        );
     }
 }
