@@ -279,9 +279,9 @@ export class SC extends Component{
     }
     addition(){
         let { height } = this.state;
-        if(height + 5 > 255){
+        if(height + 5 > maxHeight){
             this.setState({
-                height: 255,
+                height: maxHeight,
             })
         }
         else {
@@ -292,9 +292,9 @@ export class SC extends Component{
     }
     subtraction(){
         let { height } = this.state;
-        if(height - 5 < 0){
+        if(height - 5 < minHeight){
             this.setState({
-                height: 0,
+                height: minHeight,
             })
         }
         else {
