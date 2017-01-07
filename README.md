@@ -52,7 +52,7 @@ Application is written in React Native and connected to Azure. It's backend is a
 
 ### Technologies required
 
-> Visual Studio 2015 (Xamarin and Raspberries)
+> Visual Studio 2017 (Xamarin and Raspberries)
 
 > Windows 10 IoT Core (Raspberry)
 
