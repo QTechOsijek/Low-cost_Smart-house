@@ -53,7 +53,7 @@ export class Login extends Component {
       loaded: false
     })
     const { user , pass } = this.state;
-    fetch('https://reactnat.azurewebsites.net/auth', {
+    fetch('http://192.168.1.12:8000/auth', {
        method: 'POST',
        headers: {
           'Accept': 'application/json',

@@ -41,7 +41,7 @@ export class Main extends Component {
                 loaded: false,
             })
         }
-        fetch('https://reactnat.azurewebsites.net/items',
+        fetch('http://192.168.1.12:8000/items',
             {
                 method: 'POST',
                 headers: {
@@ -79,7 +79,7 @@ export class Main extends Component {
         this.setState({
             led: !this.state.led
         })
-        fetch('http://192.168.1.6:8888/act' , {
+        fetch('http://192.168.1.12:8000/act' , {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -90,10 +90,10 @@ export class Main extends Component {
             })})
             .then((response) => response.json())
             .then((responseJson) => {
-                Alert.alert("Done");
+                Alert.alert("Done")
             })
             .catch((error) => {
-                console.log(error);            
+              console.log(error)            
             })
     }
     add(){
