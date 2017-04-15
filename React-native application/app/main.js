@@ -74,12 +74,12 @@ export class Main extends Component {
         });
     }
     
-    doSomething(){
+    doSomething(id){
         console.log("radim");
         this.setState({
             led: !this.state.led
         })
-        fetch('http://192.168.1.12:8000/act' , {
+        fetch('http://192.168.1.12:8000/do' , {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -87,6 +87,7 @@ export class Main extends Component {
             },
             body: JSON.stringify({
                 "state": this.state.led,
+                "id": id
             })})
             .then((response) => response.json())
             .then((responseJson) => {
@@ -107,7 +108,7 @@ export class Main extends Component {
             <View
                 key={rowId} style={styles.card} >
                 <Text style = { styles.textp }>{data.name}</Text>
-                <Button onPress={this.doSomething}><Text style={styles.text}>{data.button}</Text></Button>
+                <Button onPress={this.doSomething(data.id)}><Text style={styles.text}>{data.button}</Text></Button>
                 <Text>{"\n"}</Text>
             </View>
         );
