@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { Title, NavigationBar, Icon, Button, ListView, Card, Screen } from '@shoutem/ui';
 import { Login } from './login';
+import Kartica from './kartica';
 
 export class Main extends Component {
     static propTypes = {
@@ -28,11 +29,37 @@ export class Main extends Component {
             item: '',
             button: '',
             adding: false,
-            led: false,       
+            led: false,
+            temp: -1,       
         };
         this.renderRow = this.renderRow.bind(this);
         this.doSomething = this.doSomething.bind(this);
+        this.getTemp = this.getTemp.bind(this);
         this.getData();
+        setInterval(this.getTemp, 10000);
+    }
+    getTemp(){
+        fetch('http://192.168.102.111:8000/temp',
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((response) =>
+                response.json()
+            )
+            .then((responseJson) => {
+                console.log(responseJson);
+                this.setState({
+                    temp: responseJson.temp,
+                })
+                console.log(this.state);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
     getData(){
         const { user } = this.props;
@@ -41,7 +68,7 @@ export class Main extends Component {
                 loaded: false,
             })
         }
-        fetch('http://192.168.1.12:8000/items',
+        fetch('http://192.168.102.111:8000/items',
             {
                 method: 'POST',
                 headers: {
@@ -106,10 +133,8 @@ export class Main extends Component {
         console.log(data);
         return(
             <View
-                key={rowId} style={styles.card} >
-                <Text style = { styles.textp }>{data.name}</Text>
-                <Button onPress={this.doSomething(data.id)}><Text style={styles.text}>{data.button}</Text></Button>
-                <Text>{"\n"}</Text>
+                key={rowId} style={styles.card}>
+                <Kartica doS={this.doSomething} id={data.id} name={data.name} button={data.button} />
             </View>
         );
     }
@@ -128,6 +153,7 @@ export class Main extends Component {
                                 renderRow = {this.renderRow}
                                 onRefresh = {this.getData.bind(this)}
                             />
+                            <Text>{this.state.temp}</Text>
                             <Button onPress={this.add.bind(this)}><Text style={styles.text}>Add New Item</Text></Button>
                             <TouchableOpacity onPress={this.invert.bind(this)}>
                                 <Text style={ styles.highlighted }>Log out</Text>
@@ -267,5 +293,6 @@ const styles = StyleSheet.create({
       width: 130,
   }
 });
+
 
 AppRegistry.registerComponent('Main', () => Main); 

@@ -39,6 +39,7 @@ export class Login extends Component {
             user: '',
             pass: '',
             loaded: true,
+            
         }
     }
   invert(){
@@ -53,7 +54,7 @@ export class Login extends Component {
       loaded: false
     })
     const { user , pass } = this.state;
-    fetch('http://192.168.1.12:8000/auth', {
+    fetch('http://192.168.102.111:8000/auth', {
        method: 'POST',
        headers: {
           'Accept': 'application/json',
