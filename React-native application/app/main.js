@@ -39,7 +39,7 @@ export class Main extends Component {
         setInterval(this.getTemp, 10000);
     }
     getTemp(){
-        fetch('http://192.168.102.111:8000/temp',
+        fetch('http://192.168.1.12:8000/temp',
             {
                 method: 'POST',
                 headers: {
@@ -68,7 +68,7 @@ export class Main extends Component {
                 loaded: false,
             })
         }
-        fetch('http://192.168.102.111:8000/items',
+        fetch('http://192.168.1.12:8000/items',
             {
                 method: 'POST',
                 headers: {

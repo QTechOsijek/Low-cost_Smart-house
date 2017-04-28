@@ -13,7 +13,7 @@ export default class Kartica extends Component {
         return(
             <View>
                 <Text style = { styles.textp }>{this.props.name}</Text>
-                <Button onPress={() => this.prosp.doS(this.props.id)}><Text style={styles.text}>{this.props.button}</Text></Button>
+                <Button onPress={() => this.props.doS(this.props.id)}><Text style={styles.text}>{this.props.button}</Text></Button>
                 <Text>{"\n"}</Text>
             </View>
         );
